@@ -27,6 +27,13 @@ public class TriadicContext {
         this.conditions = conditions;
         this.relations = relations;
     }
+    
+    public TriadicContext(ITriadicContext ctx) {
+        this.objects = ctx.getObjects();
+        this.attributes = ctx.getAttributes();
+        this.conditions = ctx.getConditions();
+        this.relations = ctx.getRelations();
+    }
 
     public String getName() {
         return name;

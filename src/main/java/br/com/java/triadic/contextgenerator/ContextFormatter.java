@@ -1,16 +1,18 @@
 package br.com.java.triadic.contextgenerator;
 
+import com.google.gson.Gson;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
  *
  * @author josue
  */
-public class ContextFormatter {
+public class ContextFormatter implements ITriadicContext {
 
+    public static String SEPARATOR = " ";
+    
     private final ArrayList<String> objects;
     private final ArrayList<String> attributes;
     private final ArrayList<String> conditions;
@@ -25,20 +27,30 @@ public class ContextFormatter {
         this.relations = new ArrayList<>();
     }
 
+    @Override
     public ArrayList<String> getObjects() {
         return objects;
     }
 
+    @Override
     public ArrayList<String> getAttributes() {
         return attributes;
     }
 
+    @Override
     public ArrayList<String> getConditions() {
         return conditions;
     }
 
+    @Override
     public ArrayList<ArrayList<ArrayList<String>>> getRelations() {
         return relations;
+    }
+    
+    public String generate() {
+        Gson gson = new Gson();
+        TriadicContext ctx = new TriadicContext(this);
+        return gson.toJson(ctx);
     }
     
     public boolean readFile() {
@@ -91,7 +103,7 @@ public class ContextFormatter {
     }
     
     private TriadicSchema parseLine(String line) {
-        String[] l = line.split("\t");
+        String[] l = line.split(SEPARATOR);
         String object = l[0];
         String attr = l[1];
         String cond = l[2];

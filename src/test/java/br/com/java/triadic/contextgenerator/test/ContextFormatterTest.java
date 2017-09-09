@@ -17,7 +17,8 @@ public class ContextFormatterTest {
     
     @Before
     public void setUp() {
-        File f = new File("/home/josue/Downloads/dados.txt");
+        File f = new File("dados.txt");
+        ContextFormatter.SEPARATOR = "\t";
         cf = new ContextFormatter(f);
     }
     

@@ -1,7 +1,9 @@
 package br.com.java.triadic.contextgenerator;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -48,9 +50,15 @@ public class ContextFormatter implements ITriadicContext {
     }
     
     public String generate() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         TriadicContext ctx = new TriadicContext(this);
         return gson.toJson(ctx);
+    }
+    
+    public void generate(Writer writer) {
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        TriadicContext ctx = new TriadicContext(this);
+        gson.toJson(ctx, writer);
     }
     
     public boolean readFile() {

@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.java.tradic.contextgenerator.gui;
+package br.com.java.triadic.contextgenerator;
 
-import br.com.java.triadic.contextgenerator.ContextFormatter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -44,7 +46,6 @@ public class MainGUI extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(460, 200));
         setMinimumSize(new java.awt.Dimension(460, 200));
         setResizable(false);
 
@@ -120,37 +121,38 @@ public class MainGUI extends javax.swing.JFrame {
         
         new Thread(() -> {
             if (cf.readFile() && cf.buildRelations()) {
-
                 JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showSaveDialog(this);
-
+                int returnVal = fc.showSaveDialog(MainGUI.this);
+                
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        FileWriter fw = new FileWriter(fc.getSelectedFile() + ".json");
-                        fw.write(cf.generate());
-                        JOptionPane.showMessageDialog(this,
-                                String.format("%d objetos, %d atributos e %d condições",
-                                        cf.getObjects().size(),
-                                        cf.getAttributes().size(),
-                                        cf.getConditions().size()),
-                                "Sucesso",
-                                JOptionPane.INFORMATION_MESSAGE);
+                    
+                    try (Writer writer = new FileWriter(fc.getSelectedFile() + ".json")) {
+                        cf.generate(writer);
+                        JOptionPane.showMessageDialog(MainGUI.this, String.format(
+                                "%d objetos, %d atributos e %d condições",
+                                cf.getObjects().size(),
+                                cf.getAttributes().size(),
+                                cf.getConditions().size()), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(this,
-                                "Ocorreu um erro ao gerar arquivo.",
-                                "Erro",
-                                JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao gerar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
+//                    try {
+//                        String result = cf.generate();
+//                        FileWriter fw = new FileWriter(fc.getSelectedFile() + ".json");
+//                        fw.write(result);
+//                        JOptionPane.showMessageDialog(MainGUI.this, String.format("%d objetos, %d atributos e %d condições",
+//                                cf.getObjects().size(),
+//                                cf.getAttributes().size(),
+//                                cf.getConditions().size()), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+//                    } catch (IOException ex) {
+//                        JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao gerar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+//                    }
                 }
-
             } else {
-                JOptionPane.showMessageDialog(this,
-                        "Ocorreu um erro ao gerar arquivo.",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao gerar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            
             jProgressBar1.setIndeterminate(false);
             jProgressBar1.setVisible(false);
             saveJsonButton.setEnabled(true);

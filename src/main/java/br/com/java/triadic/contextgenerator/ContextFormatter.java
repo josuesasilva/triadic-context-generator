@@ -49,12 +49,14 @@ public class ContextFormatter implements ITriadicContext {
         return relations;
     }
     
+    @Override
     public String generate() {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         TriadicContext ctx = new TriadicContext(this);
         return gson.toJson(ctx);
     }
     
+    @Override
     public void generate(Writer writer) {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         TriadicContext ctx = new TriadicContext(this);

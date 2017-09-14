@@ -1,19 +1,21 @@
 package br.com.java.triadic.contextgenerator;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ContextGenerator {
+public class ContextGenerator implements ITriadicContext {
     
     private final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
-    private String name;
-    private int objectsAmount;
-    private int attributesAmount;
-    private int conditionsAmount;
+    private final String name;
+    private final int objectsAmount;
+    private final int attributesAmount;
+    private final int conditionsAmount;
     private ArrayList<String> objects;
     private ArrayList<String> attributes;
     private ArrayList<String> conditions;
@@ -24,23 +26,6 @@ public class ContextGenerator {
         this.objectsAmount = objects;
         this.attributesAmount = attributes;
         this.conditionsAmount = conditions;
-    }
-    
-    public String generate() {
-        generateObjetcs();
-        generateAttributes();
-        generateConditions();
-        generateRelations();
-        
-        Gson gson = new Gson();
-        TriadicContext ctx = new TriadicContext(
-                this.name,
-                this.objects,
-                this.attributes,
-                this.conditions,
-                this.relations
-        );
-        return gson.toJson(ctx);
     }
     
     private void generateObjetcs() {
@@ -106,17 +91,61 @@ public class ContextGenerator {
         this.relations = items;
     }
 
+    @Override
     public ArrayList<String> getObjects() {
         return objects;
     }
 
+    @Override
     public ArrayList<String> getAttributes() {
         return attributes;
     }
 
+    @Override
     public ArrayList<String> getConditions() {
         return conditions;
     }
 
+    @Override
+    public ArrayList<ArrayList<ArrayList<String>>> getRelations() {
+        generateRelations();
+        return this.relations;
+    }
+
+    @Override
+    public void generate(Writer writer) {
+        generateObjetcs();
+        generateAttributes();
+        generateConditions();
+        generateRelations();
+        
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        TriadicContext ctx = new TriadicContext(
+                this.name,
+                this.objects,
+                this.attributes,
+                this.conditions,
+                this.relations
+        );
+        gson.toJson(ctx, writer);
+    }
+
+    @Override
+    public String generate() {
+        generateObjetcs();
+        generateAttributes();
+        generateConditions();
+        generateRelations();
+        
+        Gson gson = new Gson();
+        TriadicContext ctx = new TriadicContext(
+                this.name,
+                this.objects,
+                this.attributes,
+                this.conditions,
+                this.relations
+        );
+        return gson.toJson(ctx);
+    }
     
 }

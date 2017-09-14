@@ -5,6 +5,7 @@
  */
 package br.com.java.triadic.contextgenerator;
 
+import java.io.Writer;
 import java.util.ArrayList;
 
 /**
@@ -16,4 +17,6 @@ public interface ITriadicContext {
     ArrayList<String> getAttributes();
     ArrayList<String> getConditions();
     ArrayList<ArrayList<ArrayList<String>>> getRelations();
+    String generate();
+    void generate(Writer writer);
 }

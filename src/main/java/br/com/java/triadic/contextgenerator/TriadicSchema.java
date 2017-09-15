@@ -2,7 +2,7 @@ package br.com.java.triadic.contextgenerator;
 
 /**
  *
- * @author josue
+ * @author Josué
  */
 public class TriadicSchema {
     

@@ -2,13 +2,17 @@ package br.com.java.triadic.contextgenerator;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Josué
+ */
 public class TriadicContext {
 
     private String name;
-    private ArrayList<String> objects;
-    private ArrayList<String> attributes;
-    private ArrayList<String> conditions;
-    private ArrayList<ArrayList<ArrayList<String>>> relations;
+    private final ArrayList<String> objects;
+    private final ArrayList<String> attributes;
+    private final ArrayList<String> conditions;
+    private final ArrayList<ArrayList<ArrayList<String>>> relations;
     
     public TriadicContext(String name) {
         this.name = name;
@@ -28,7 +32,7 @@ public class TriadicContext {
         this.relations = relations;
     }
     
-    public TriadicContext(ITriadicContext ctx) {
+    public TriadicContext(IOutput ctx) {
         this.objects = ctx.getObjects();
         this.attributes = ctx.getAttributes();
         this.conditions = ctx.getConditions();

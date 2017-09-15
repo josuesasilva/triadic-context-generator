@@ -9,9 +9,9 @@ import java.util.Scanner;
 
 /**
  *
- * @author josue
+ * @author Josué
  */
-public class ContextFormatter implements ITriadicContext {
+public class ContextFormatter implements IOutput {
 
     public static String SEPARATOR = " ";
     
@@ -50,14 +50,14 @@ public class ContextFormatter implements ITriadicContext {
     }
     
     @Override
-    public String generate() {
+    public String generateJSON() {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         TriadicContext ctx = new TriadicContext(this);
         return gson.toJson(ctx);
     }
     
     @Override
-    public void generate(Writer writer) {
+    public void generateJSON(Writer writer) {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         TriadicContext ctx = new TriadicContext(this);
         gson.toJson(ctx, writer);

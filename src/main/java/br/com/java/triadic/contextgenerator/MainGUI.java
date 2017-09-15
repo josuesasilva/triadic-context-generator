@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.java.triadic.contextgenerator;
 
 import java.io.File;
@@ -116,7 +111,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Nome:");
 
-        inputName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        inputName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel3.setText("Quantidade de objetos:");
 
@@ -229,7 +224,7 @@ public class MainGUI extends javax.swing.JFrame {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     
                     try (Writer writer = new FileWriter(fc.getSelectedFile() + ".json")) {
-                        cf.generate(writer);
+                        cf.generateJSON(writer);
                         JOptionPane.showMessageDialog(MainGUI.this, String.format(
                                 "%d objetos, %d atributos e %d condições",
                                 cf.getObjects().size(),
@@ -276,7 +271,7 @@ public class MainGUI extends javax.swing.JFrame {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 
                 try (Writer writer = new FileWriter(fc.getSelectedFile() + ".json")) {
-                    cg.generate(writer);
+                    cg.generateJSON(writer);
                     JOptionPane.showMessageDialog(MainGUI.this, String.format(
                             "%d objetos, %d atributos e %d condições",
                             cg.getObjects().size(),

@@ -8,7 +8,11 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ContextGenerator implements ITriadicContext {
+/**
+ *
+ * @author Josué
+ */
+public class ContextGenerator implements IOutput {
     
     private final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
@@ -113,7 +117,7 @@ public class ContextGenerator implements ITriadicContext {
     }
 
     @Override
-    public void generate(Writer writer) {
+    public void generateJSON(Writer writer) {
         generateObjetcs();
         generateAttributes();
         generateConditions();
@@ -131,7 +135,7 @@ public class ContextGenerator implements ITriadicContext {
     }
 
     @Override
-    public String generate() {
+    public String generateJSON() {
         generateObjetcs();
         generateAttributes();
         generateConditions();

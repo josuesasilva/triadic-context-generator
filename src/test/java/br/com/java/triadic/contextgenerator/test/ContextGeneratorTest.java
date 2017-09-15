@@ -25,19 +25,19 @@ public class ContextGeneratorTest {
 
     @Test
     public void generateObjects() {
-        generator.generate();
+        generator.generateJSON();
         assertEquals(generator.getObjects().size(), 100);
     }
     
     @Test
     public void generateAttrs() {
-        generator.generate();
+        generator.generateJSON();
         assertEquals(generator.getAttributes().size(), 100);
     }
     
     @Test
     public void generateConds() {
-        generator.generate();
+        generator.generateJSON();
         assertEquals(generator.getConditions().size(), 100);
     }
 }

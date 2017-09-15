@@ -1,6 +1,6 @@
 # triadic-context-generator
 
-An algorithm for generate and format triadic context
+An algorithm for generate and format triadic context.
 
 ## running/developing
 

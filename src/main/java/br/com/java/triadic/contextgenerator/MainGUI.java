@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -14,8 +15,9 @@ import javax.swing.JOptionPane;
  * @author Josué
  */
 public class MainGUI extends javax.swing.JFrame {
-    
-    File file;
+
+    private File file;
+    private ContextFormatter triadicContext;
 
     /**
      * Creates new form MainGUI
@@ -44,6 +46,18 @@ public class MainGUI extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         selectFileButton = new javax.swing.JButton();
         saveJsonButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        condsList = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        objectsList = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        attrsList = new javax.swing.JList<>();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        objectsSize = new javax.swing.JLabel();
+        attrsSize = new javax.swing.JLabel();
+        condsSize = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         inputName = new javax.swing.JTextField();
@@ -79,6 +93,33 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        condsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                condsListValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(condsList);
+
+        objectsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                objectsListValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(objectsList);
+
+        attrsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                attrsListValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(attrsList);
+
+        jLabel6.setText("Objetos:");
+
+        jLabel7.setText("Atributos:");
+
+        jLabel8.setText("Condições:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -90,9 +131,31 @@ public class MainGUI extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(selectFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(objectsSize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(attrsSize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(condsSize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveJsonButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(6, 6, 6)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -103,8 +166,22 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(selectFileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveJsonButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(objectsSize)
+                    .addComponent(attrsSize)
+                    .addComponent(condsSize))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(saveJsonButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 129, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         jTabbedPane3.addTab("Gerar JSON", jPanel1);
@@ -146,7 +223,7 @@ public class MainGUI extends javax.swing.JFrame {
                             .addComponent(inputAttributes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputConditions, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(saveContextButton))
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,41 +277,63 @@ public class MainGUI extends javax.swing.JFrame {
     private void selectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileButtonActionPerformed
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             file = fc.getSelectedFile();
             jTextField1.setText(file.getAbsolutePath());
             saveJsonButton.setEnabled(true);
+
+            jProgressBar1.setVisible(true);
+            jProgressBar1.setIndeterminate(true);
+            saveJsonButton.setEnabled(false);
+
+            new Thread(() -> {
+                triadicContext = new ContextFormatter(file);
+                if (triadicContext.readFile() && triadicContext.buildRelations()) {
+                    
+                    objectsList.setListData(triadicContext.getObjects().toArray(new String[0]));
+                    attrsList.setListData(triadicContext.getAttributes().toArray(new String[0]));
+                    condsList.setListData(triadicContext.getConditions().toArray(new String[0]));
+                    
+                    objectsSize.setText(String.valueOf(triadicContext.getObjects().size()));
+                    attrsSize.setText(String.valueOf(triadicContext.getAttributes().size()));
+                    condsSize.setText(String.valueOf(triadicContext.getConditions().size()));
+                    
+                } else {
+                    JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao carregar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+                jProgressBar1.setIndeterminate(false);
+                jProgressBar1.setVisible(false);
+                saveJsonButton.setEnabled(true);
+            }).start();
         }
-        
+
     }//GEN-LAST:event_selectFileButtonActionPerformed
 
     private void saveJsonButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveJsonButtonActionPerformed
-        ContextFormatter cf = new ContextFormatter(file);
-
         jProgressBar1.setVisible(true);
         jProgressBar1.setIndeterminate(true);
         saveJsonButton.setEnabled(false);
-        
+
         new Thread(() -> {
-            if (cf.readFile() && cf.buildRelations()) {
+            if (triadicContext != null) {
                 JFileChooser fc = new JFileChooser();
                 int returnVal = fc.showSaveDialog(MainGUI.this);
-                
+
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    
+
                     try (Writer writer = new FileWriter(fc.getSelectedFile() + ".json")) {
-                        cf.generateJSON(writer);
+                        triadicContext.generateJSON(writer);
                         JOptionPane.showMessageDialog(MainGUI.this, String.format(
                                 "%d objetos, %d atributos e %d condições",
-                                cf.getObjects().size(),
-                                cf.getAttributes().size(),
-                                cf.getConditions().size()), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                                triadicContext.getObjects().size(),
+                                triadicContext.getAttributes().size(),
+                                triadicContext.getConditions().size()), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao gerar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
                         Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                   
+
                 }
             } else {
                 JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao gerar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -257,19 +356,19 @@ public class MainGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(MainGUI.this, "Verifique os valores dos campos..", "Valor inserido inválido!", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         final ContextGenerator cg = new ContextGenerator(name, objs, attrs, conds);
 
         jProgressBar1.setVisible(true);
         jProgressBar1.setIndeterminate(true);
         saveJsonButton.setEnabled(false);
-        
+
         new Thread(() -> {
             JFileChooser fc = new JFileChooser();
             int returnVal = fc.showSaveDialog(MainGUI.this);
-            
+
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                
+
                 try (Writer writer = new FileWriter(fc.getSelectedFile() + ".json")) {
                     cg.generateJSON(writer);
                     JOptionPane.showMessageDialog(MainGUI.this, String.format(
@@ -288,6 +387,27 @@ public class MainGUI extends javax.swing.JFrame {
             saveJsonButton.setEnabled(true);
         }).start();
     }//GEN-LAST:event_saveContextButtonActionPerformed
+
+    private void objectsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_objectsListValueChanged
+        if (evt.getValueIsAdjusting() == false) {
+            int objts = objectsList.getSelectedValuesList().size();
+            objectsSize.setText(String.valueOf(objts));
+        }
+    }//GEN-LAST:event_objectsListValueChanged
+
+    private void attrsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_attrsListValueChanged
+        if (evt.getValueIsAdjusting() == false) {
+            int attrs = attrsList.getSelectedValuesList().size();
+            attrsSize.setText(String.valueOf(attrs));
+        }
+    }//GEN-LAST:event_attrsListValueChanged
+
+    private void condsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_condsListValueChanged
+        if (evt.getValueIsAdjusting() == false) {
+            int conds = condsList.getSelectedValuesList().size();
+            condsSize.setText(String.valueOf(conds));
+        }
+    }//GEN-LAST:event_condsListValueChanged
 
     /**
      * @param args the command line arguments
@@ -323,6 +443,10 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> attrsList;
+    private javax.swing.JLabel attrsSize;
+    private javax.swing.JList<String> condsList;
+    private javax.swing.JLabel condsSize;
     private javax.swing.JTextField inputAttributes;
     private javax.swing.JTextField inputConditions;
     private javax.swing.JTextField inputName;
@@ -332,13 +456,21 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JList<String> objectsList;
+    private javax.swing.JLabel objectsSize;
     private javax.swing.JButton saveContextButton;
     private javax.swing.JButton saveJsonButton;
     private javax.swing.JButton selectFileButton;

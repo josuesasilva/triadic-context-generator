@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class ContextFormatter implements IOutput {
 
-    public static String SEPARATOR = " ";
+    public static String SEPARATOR = "\t";
     
     private final ArrayList<String> objects;
     private final ArrayList<String> attributes;
@@ -70,6 +70,8 @@ public class ContextFormatter implements IOutput {
             while(scan.hasNextLine()) {
                 TriadicSchema line = parseLine(scan.nextLine());
                 
+                if (line == null) continue;
+                
                 if (!objects.contains(line.getObject()))
                     objects.add(line.getObject());
                 
@@ -81,7 +83,7 @@ public class ContextFormatter implements IOutput {
             }
             scan.close();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -99,6 +101,9 @@ public class ContextFormatter implements IOutput {
             
             while(scan.hasNextLine()) {
                 TriadicSchema line = parseLine(scan.nextLine());
+                
+                if (line == null) continue;
+                
                 relations.get(objects.indexOf(line.getObject()))
                         .get(attributes.indexOf(line.getAttribute()))
                         .add(line.getCondition());
@@ -106,7 +111,7 @@ public class ContextFormatter implements IOutput {
             System.out.println(relations);
             scan.close();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -114,10 +119,13 @@ public class ContextFormatter implements IOutput {
     
     private TriadicSchema parseLine(String line) {
         String[] l = line.split(SEPARATOR);
-        String object = l[0];
-        String attr = l[1];
-        String cond = l[2];
-        return new TriadicSchema(object, attr, cond);
+        if (l.length > 2) {
+            String object = l[0];
+            String attr = l[1];
+            String cond = l[2];
+            return new TriadicSchema(object, attr, cond);
+        }
+        return null;
     }
     
 }

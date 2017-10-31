@@ -6,17 +6,17 @@
 package br.com.java.triadic.contextgenerator;
 
 import java.io.Writer;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Josué
  */
 public interface IOutput {
-    ArrayList<String> getObjects();
-    ArrayList<String> getAttributes();
-    ArrayList<String> getConditions();
-    ArrayList<ArrayList<ArrayList<String>>> getRelations();
+    List<String> getObjects();
+    List<String> getAttributes();
+    List<String> getConditions();
+    List<List<List<String>>> getRelations();
     String generateJSON();
     void generateJSON(Writer writer);
 }

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -15,10 +16,10 @@ public class ContextFormatter implements IOutput {
 
     public static String SEPARATOR = "\t";
     
-    private final ArrayList<String> objects;
-    private final ArrayList<String> attributes;
-    private final ArrayList<String> conditions;
-    private final ArrayList<ArrayList<ArrayList<String>>> relations;
+    private final List<String> objects;
+    private final List<String> attributes;
+    private final List<String> conditions;
+    private final List<List<List<String>>> relations;
     private final File file;
 
     public ContextFormatter(File file) {
@@ -28,25 +29,41 @@ public class ContextFormatter implements IOutput {
         this.conditions = new ArrayList<>();
         this.relations = new ArrayList<>();
     }
-
-    @Override
-    public ArrayList<String> getObjects() {
-        return objects;
+    
+    public ContextFormatter(File file, List<String> objects, 
+            List<String> attributes, List<String> conditions,
+            List<List<List<String>>> relations) {
+        this.file = file;
+        this.objects = objects;
+        this.attributes = attributes;
+        this.conditions = conditions;
+        this.relations = relations;
+    }
+    
+    public ContextFormatter filter(List<String> objects, 
+            List<String> attrs, List<String> conds) {
+        return new ContextFormatter(this.file, objects, attrs, conds, 
+                buildRelations(this.file, objects, attrs, conds));
     }
 
     @Override
-    public ArrayList<String> getAttributes() {
-        return attributes;
+    public List<String> getObjects() {
+        return this.objects;
     }
 
     @Override
-    public ArrayList<String> getConditions() {
-        return conditions;
+    public List<String> getAttributes() {
+        return this.attributes;
     }
 
     @Override
-    public ArrayList<ArrayList<ArrayList<String>>> getRelations() {
-        return relations;
+    public List<String> getConditions() {
+        return this.conditions;
+    }
+
+    @Override
+    public List<List<List<String>>> getRelations() {
+        return this.relations;
     }
     
     @Override
@@ -91,7 +108,7 @@ public class ContextFormatter implements IOutput {
     
     public boolean buildRelations() {
         objects.forEach((__) -> {
-            ArrayList<ArrayList<String>> object = new ArrayList<>();
+            List<List<String>> object = new ArrayList<>();
             attributes.forEach((___) -> object.add(new ArrayList<>()));
             relations.add(object);
         });
@@ -115,6 +132,43 @@ public class ContextFormatter implements IOutput {
             return false;
         }
         return true;
+    }
+    
+    private List<List<List<String>>> buildRelations(File file,
+            List<String> fobjects, List<String> fattrs, List<String> fconds) {
+       
+        List<List<List<String>>> rels = new ArrayList<>();
+        
+        fobjects.forEach((__) -> {
+            List<List<String>> o = new ArrayList<>();
+            fattrs.forEach((___) -> o.add(new ArrayList<>()));
+            rels.add(o);
+        });
+        
+        try (Scanner scan = new Scanner(file)) {
+            scan.nextLine();
+            
+            while(scan.hasNextLine()) {
+                TriadicSchema line = parseLine(scan.nextLine());
+                
+                if (line == null) continue;
+                
+                if (fobjects.contains(line.getObject()) &&
+                        fattrs.contains(line.getAttribute()) &&
+                        fconds.contains(line.getCondition())) {
+                    rels.get(fobjects.indexOf(line.getObject()))
+                        .get(fattrs.indexOf(line.getAttribute()))
+                        .add(line.getCondition());   
+                }
+            }
+            
+            System.out.println(rels);
+            scan.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return rels;
+        }
+        return rels;
     }
     
     private TriadicSchema parseLine(String line) {

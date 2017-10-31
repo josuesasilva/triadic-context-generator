@@ -1,6 +1,7 @@
 package br.com.java.triadic.contextgenerator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -9,10 +10,10 @@ import java.util.ArrayList;
 public class TriadicContext {
 
     private String name;
-    private final ArrayList<String> objects;
-    private final ArrayList<String> attributes;
-    private final ArrayList<String> conditions;
-    private final ArrayList<ArrayList<ArrayList<String>>> relations;
+    private final List<String> objects;
+    private final List<String> attributes;
+    private final List<String> conditions;
+    private final List<List<List<String>>> relations;
     
     public TriadicContext(String name) {
         this.name = name;
@@ -22,9 +23,9 @@ public class TriadicContext {
         this.relations = new ArrayList<>();
     }
     
-    public TriadicContext(String name, ArrayList<String> objects, 
-            ArrayList<String> attributes, ArrayList<String> conditions, 
-            ArrayList<ArrayList<ArrayList<String>>> relations) {
+    public TriadicContext(String name, List<String> objects, 
+            List<String> attributes, List<String> conditions, 
+            List<List<List<String>>> relations) {
         this.name = name;
         this.objects = objects;
         this.attributes = attributes;
@@ -43,19 +44,19 @@ public class TriadicContext {
         return name;
     }
 
-    public ArrayList<String> getObjects() {
+    public List<String> getObjects() {
         return objects;
     }
 
-    public ArrayList<String> getAttributes() {
+    public List<String> getAttributes() {
         return attributes;
     }
 
-    public ArrayList<String> getConditions() {
+    public List<String> getConditions() {
         return conditions;
     }
 
-    public ArrayList<ArrayList<ArrayList<String>>> getRelations() {
+    public List<List<List<String>>> getRelations() {
         return relations;
     }
 }

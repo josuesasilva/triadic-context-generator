@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,10 +21,10 @@ public class ContextGenerator implements IOutput {
     private final int objectsAmount;
     private final int attributesAmount;
     private final int conditionsAmount;
-    private ArrayList<String> objects;
-    private ArrayList<String> attributes;
-    private ArrayList<String> conditions;
-    private ArrayList<ArrayList<ArrayList<String>>> relations;
+    private List<String> objects;
+    private List<String> attributes;
+    private List<String> conditions;
+    private List<List<List<String>>> relations;
     
     public ContextGenerator(String name, int objects, int attributes, int conditions) {
         this.name = name;
@@ -67,7 +68,7 @@ public class ContextGenerator implements IOutput {
     }
     
     private void generateRelations() {
-        ArrayList<ArrayList<ArrayList<String>>> items = new ArrayList<>();
+        List<List<List<String>>> items = new ArrayList<>();
         
         if (this.conditions == null) {
             this.relations = new ArrayList<>();
@@ -75,10 +76,10 @@ public class ContextGenerator implements IOutput {
         }
         
         for (int i = 0; i < objectsAmount; i++) {
-            ArrayList<ArrayList<String>> a = new ArrayList<>();
+            List<List<String>> a = new ArrayList<>();
             
             for (int j = 0; j < attributesAmount; j++) {
-                ArrayList<String> r = new ArrayList<>();
+                List<String> r = new ArrayList<>();
                 
                 for (int k = 0; k < conditionsAmount; k++) {
                     int index = new Random().nextInt(conditionsAmount);
@@ -96,22 +97,22 @@ public class ContextGenerator implements IOutput {
     }
 
     @Override
-    public ArrayList<String> getObjects() {
+    public List<String> getObjects() {
         return objects;
     }
 
     @Override
-    public ArrayList<String> getAttributes() {
+    public List<String> getAttributes() {
         return attributes;
     }
 
     @Override
-    public ArrayList<String> getConditions() {
+    public List<String> getConditions() {
         return conditions;
     }
 
     @Override
-    public ArrayList<ArrayList<ArrayList<String>>> getRelations() {
+    public List<List<List<String>>> getRelations() {
         generateRelations();
         return this.relations;
     }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -323,12 +324,29 @@ public class MainGUI extends javax.swing.JFrame {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
 
                     try (Writer writer = new FileWriter(fc.getSelectedFile() + ".json")) {
-                        triadicContext.generateJSON(writer);
+                        
+                        List<String> objts = 
+                                objectsList.getSelectedValuesList().size() > 0 ?
+                                objectsList.getSelectedValuesList() :
+                                triadicContext.getObjects();
+                        
+                        List<String> attrs = 
+                                attrsList.getSelectedValuesList().size() > 0 ?
+                                attrsList.getSelectedValuesList() :
+                                triadicContext.getAttributes();
+                        
+                        List<String> conds = 
+                                condsList.getSelectedValuesList().size() > 0 ?
+                                condsList.getSelectedValuesList() :
+                                triadicContext.getConditions();
+                        
+                        triadicContext.filter(objts, attrs, conds).generateJSON(writer);
+                        
                         JOptionPane.showMessageDialog(MainGUI.this, String.format(
                                 "%d objetos, %d atributos e %d condições",
-                                triadicContext.getObjects().size(),
-                                triadicContext.getAttributes().size(),
-                                triadicContext.getConditions().size()), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                                objts.size(),
+                                attrs.size(),
+                                conds.size()), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(MainGUI.this, "Ocorreu um erro ao gerar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
                         Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
